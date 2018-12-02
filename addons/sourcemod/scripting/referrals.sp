@@ -7,7 +7,6 @@
 
 #include <sourcemod>
 #include <sdktools>
-#include <cstrike>
 
 #pragma newdecls required
 
@@ -56,9 +55,9 @@ public Action Listener_JoinTeam(int client, const char[] command, int argc)
 	GetCmdArg(1, sTeam, sizeof(sTeam));
 	int team = StringToInt(sTeam);
 	int curTeam = GetClientTeam(client);
-	if(curTeam < CS_TEAM_T)
+	if(curTeam < 2)
 	{
-		if(team >= CS_TEAM_T)
+		if(team >= 2)
 			g_fLastTeamJoin[client] = GetGameTime();
 		return Plugin_Continue;
 	}
@@ -316,7 +315,7 @@ public void OnClientDisconnect(int client)
 {
 	if(!g_bLoading[client])
 	{
-		SQL_UpdatePlaytime(client, g_fPlayTime[client] + GetClientTeam(client) >= CS_TEAM_T ? GetGameTime() - g_fLastTeamJoin[client] : 0.0);
+		SQL_UpdatePlaytime(client, g_fPlayTime[client] + GetClientTeam(client) >= 2 ? GetGameTime() - g_fLastTeamJoin[client] : 0.0);
 	}
 	
 	g_iClientCode[client] = 0;
